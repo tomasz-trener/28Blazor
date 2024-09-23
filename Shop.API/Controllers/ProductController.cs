@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Shared;
 using Shop.Shared.Models;
-using Shop.Shared.ProdcutService;
+using Shop.Shared.Services.ProdcutService;
 
 namespace Shop.API.Controllers
 {

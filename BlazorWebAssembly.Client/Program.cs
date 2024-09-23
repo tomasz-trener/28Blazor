@@ -2,7 +2,7 @@ using BlazorWebAssembly.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Shop.Shared.Configuration;
-using Shop.Shared.ProdcutService;
+using Shop.Shared.Services.ProdcutService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

@@ -11,7 +11,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Shop.Shared.ProdcutService
+namespace Shop.Shared.Services.ProdcutService
 {
     public class ProductService : IProductService
     {

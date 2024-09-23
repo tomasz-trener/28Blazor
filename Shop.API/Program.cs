@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.API.Models;
 using Shop.API.Services;
-using Shop.Shared.ProdcutService;
+using Shop.Shared.Services.ProdcutService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,23 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, Shop.API.Services.ProductService>();
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        //builder.WithOrigins("https://localhost:3000");
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +45,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseCors();    
 
 app.UseAuthorization();
 

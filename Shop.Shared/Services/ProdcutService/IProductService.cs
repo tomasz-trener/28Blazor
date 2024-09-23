@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Shared.ProdcutService
+namespace Shop.Shared.Services.ProdcutService
 {
     public interface IProductService
     {
