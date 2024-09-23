@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shop.Shared.Configuration
 {
-    public class AppSettngs
+    public class AppSettings
     {
-        public AppSettngs()
+        public AppSettings()
         {
             ProductEndpoint = new ProductEndpoint();
 

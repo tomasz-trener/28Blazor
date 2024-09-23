@@ -16,9 +16,9 @@ namespace Shop.Shared.ProdcutService
     public class ProductService : IProductService
     {
         private readonly HttpClient _httpClient;
-        private readonly AppSettngs _appSettngs;
+        private readonly AppSettings _appSettngs;
 
-        public ProductService(HttpClient httpClient, IOptions<AppSettngs> appSettings)
+        public ProductService(HttpClient httpClient, IOptions<AppSettings> appSettings)
         {
             _httpClient = httpClient;
             _appSettngs = appSettings.Value;
