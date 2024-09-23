@@ -41,6 +41,8 @@ else
 
         <button type="submit" class="btn btn-primary">Save</button>
     </EditForm>
+
+    <button type="button" class="btn btn-primary" @onclick="HandleDelete">Delete</button>
 }
 
 
@@ -69,6 +71,19 @@ else
     private async Task HandleValidSubmit()
     {
         var response = await ProductService.UpdateProductAsync(product);
+        if (response.Success)
+        {
+            NavigationManager.NavigateTo("/products/productsList");
+        }
+        else
+        {
+            message = response.Message;
+        }
+    }
+
+    private async Task HandleDelete()
+    {
+        var response = await ProductService.DeleteProductAsync(Id);
         if (response.Success)
         {
             NavigationManager.NavigateTo("/products/productsList");

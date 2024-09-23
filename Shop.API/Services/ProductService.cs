@@ -21,9 +21,32 @@ namespace Shop.API.Services
             throw new NotImplementedException();
         }
 
-        public Task<ServiceReponse<Product>> DeleteProductAsync(int id)
+        public async Task<ServiceReponse<bool>> DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = new ServiceReponse<bool>();
+
+            try
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+                if (product == null)
+                {
+                    result.Success = false;
+                    result.Message = "Product not found";
+                    result.Data = true;
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+                result.Success = true;
+                result.Message = "Product deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = $"Error deleting product: {ex.Message}";
+            }
+
+            return result;
         }
 
         public async Task<ServiceReponse<Product>> GetProductAsync(int id)
@@ -32,6 +55,7 @@ namespace Shop.API.Services
             try
             {
                 result.Data = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+                result.Success = true;
                 if (result.Data == null)
                 {
                     result.Success = false;

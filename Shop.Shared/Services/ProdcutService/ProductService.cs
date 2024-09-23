@@ -30,9 +30,11 @@ namespace Shop.Shared.Services.ProdcutService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceReponse<Product>> DeleteProductAsync(int id)
+        public async Task<ServiceReponse<bool>> DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync($"{id}");
+            var result = await response.Content.ReadFromJsonAsync<ServiceReponse<bool>>();
+            return result;
         }
 
         public async Task<ServiceReponse<Product>> GetProductAsync(int id)
