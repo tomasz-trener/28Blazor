@@ -1,7 +1,65 @@
-﻿<h3>ProductsList</h3>
+﻿@page "/products/productsList"
+
+@inject IProductService ProductService
 
 
+<h3>ProductsList</h3>
+
+
+@if (products == null)
+{
+    <p>@message</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Barcode</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Barcode</td>
+                    <td>@product.CreatedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
 
 @code {
 
+    private List<Product> products;
+    private string message = "Loading...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        // products = await Http.GetFromJsonAsync<List<Product>>("api/products");
+        var reponse = await ProductService.GetProductsAsync();
+        if (reponse.Success)
+        {
+            products = reponse.Data;
+        }
+        else
+        {
+            message = reponse.Message;
+        }
+
+    }
 }
