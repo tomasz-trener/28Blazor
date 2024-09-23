@@ -1,0 +1,3 @@
+
+curl -X GET "https://localhost:7034/api/product" -H "accept: application/json"
+

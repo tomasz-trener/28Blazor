@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Shared", "Shop.Shared\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DataSeeder", "Shop.DataSeeder\Shop.DataSeeder.csproj", "{56874E27-28BB-4494-9E90-F924980FF0A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A49E2223-C75A-453E-A742-D7F0A4293BFB}"
+	ProjectSection(SolutionItems) = preProject
+		podsuwamonie.txt = podsuwamonie.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

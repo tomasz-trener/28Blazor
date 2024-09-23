@@ -5,6 +5,7 @@ using Shop.Shared.ProdcutService;
 
 namespace Shop.API.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : Controller
