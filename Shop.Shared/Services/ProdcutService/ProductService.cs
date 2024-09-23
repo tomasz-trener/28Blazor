@@ -5,6 +5,7 @@ using Shop.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
@@ -34,9 +35,11 @@ namespace Shop.Shared.Services.ProdcutService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceReponse<Product>> GetProductAsync(int id)
+        public async Task<ServiceReponse<Product>> GetProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"{id}");
+            var result = await response.Content.ReadFromJsonAsync<ServiceReponse<Product>>();
+            return result;
         }
 
         public async Task<ServiceReponse<List<Product>>> GetProductsAsync()

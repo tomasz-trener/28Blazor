@@ -1,7 +1,7 @@
 ﻿@page "/products/productsList"
 
 @inject IProductService ProductService
-
+@inject NavigationManager NavigationManager
 
 <h3>ProductsList</h3>
 
@@ -31,6 +31,7 @@ else
                     <td>@product.Price</td>
                     <td>@product.Barcode</td>
                     <td>@product.CreatedDate</td>
+                    <td><button class="btn btn-primary" @onclick="()=>GoToEditProduct(product.Id)" >Edit</button></td>
                 </tr>
             }
         </tbody>
@@ -61,5 +62,10 @@ else
             message = reponse.Message;
         }
 
+    }
+
+    private void GoToEditProduct(int productId)
+    {
+        NavigationManager.NavigateTo($"/products/editProduct/{productId}");
     }
 }
