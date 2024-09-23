@@ -1,0 +1,39 @@
+﻿@page "/newcalculator"
+
+<h3>NewCalculator</h3>
+
+
+
+<EditForm Model="@operationModel" OnValidSubmit="@Calculate">
+
+    <InputNumber @bind-Value="@operationModel.Number1" />
+    <InputNumber @bind-Value="@operationModel.Number2" />
+    <button type="submit">Calculate</button>
+    <br />
+    <br />
+    <label>Result: @operationModel.Result</label>
+</EditForm>
+
+
+@code {
+    //OperationModel operationModel = new OperationModel();
+    OperationModel operationModel;
+
+    protected override void OnInitialized()
+    {
+        operationModel = new OperationModel();
+    }
+
+
+    public class OperationModel
+    {
+        public double Number1 { get; set; }
+        public double Number2 { get; set; }
+        public double? Result { get; set; }
+    }
+
+    private void Calculate()
+    {
+        operationModel.Result = operationModel.Number1 + operationModel.Number2;
+    }
+}

@@ -1,0 +1,49 @@
+﻿@page "/newcalculatorvalidation"
+@using System.ComponentModel.DataAnnotations
+
+<h3>NewCalculator validation</h3>
+
+
+
+<EditForm Model="@operationModel" OnValidSubmit="@Calculate">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputNumber @bind-Value="@operationModel.Number1" />
+    <ValidationMessage For="@(() => operationModel.Number1)" />
+    <InputNumber @bind-Value="@operationModel.Number2" />
+    <ValidationMessage For="@(() => operationModel.Number2)" />
+    <button type="submit">Calculate</button>
+    <br />
+    <br />
+    <label>Result: @operationModel.Result</label>
+</EditForm>
+
+
+@code {
+    //OperationModel operationModel = new OperationModel();
+    OperationModel operationModel;
+
+    protected override void OnInitialized()
+    {
+        operationModel = new OperationModel();
+    }
+
+
+    public class OperationModel
+    {
+      
+        [Range(0,100, ErrorMessage = "Number1 must be between 0 and 100")]
+        public double Number1 { get; set; }
+      
+        [Range(0, 100, ErrorMessage = "Number2 must be between 0 and 100")]
+        public double Number2 { get; set; }
+        public double? Result { get; set; }
+
+    }
+
+    private void Calculate()
+    {
+        operationModel.Result = operationModel.Number1 + operationModel.Number2;
+    }
+}
