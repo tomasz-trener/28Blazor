@@ -62,10 +62,13 @@ namespace Shop.Shared.Services.ProdcutService
                     Message = "Failed to load products:" + ex.Message
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return new ServiceReponse<List<Product>>()
+                {
+                    Success = false,
+                    Message = "Failed to load products:" + ex.Message
+                };  
             }
         }
 
@@ -74,9 +77,33 @@ namespace Shop.Shared.Services.ProdcutService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceReponse<Product>> UpdateProductAsync(Product product)
+        public async Task<ServiceReponse<Product>> UpdateProductAsync(Product product)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync(_appSettngs.ProductEndpoint.UpdateProduct, product);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                var updatedProduct = JsonConvert.DeserializeObject<ServiceReponse<Product>>(json);
+                return updatedProduct;
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ServiceReponse<Product>()
+                {
+                    Success = false,
+                    Message = "Failed to load products:" + ex.Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceReponse<Product>()
+                {
+                    Success = false,
+                    Message = "Failed to load products:" + ex.Message
+                };
+            }
         }
     }
 }

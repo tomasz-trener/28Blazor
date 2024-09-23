@@ -50,5 +50,19 @@ namespace Shop.API.Controllers
             }
             return NotFound(result);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceReponse<Product>>> UpdateProduct([FromBody] Product product)
+        {
+            var result = await _productService.UpdateProductAsync(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
+        }
     }
 }
+
+
+//szkolenia@tomaszles.pl

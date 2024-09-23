@@ -93,9 +93,31 @@ namespace Shop.API.Services
             throw new NotImplementedException();
         }
 
-        public Task<ServiceReponse<Product>> UpdateProductAsync(Product product)
+        public async Task<ServiceReponse<Product>> UpdateProductAsync(Product updatedProduct)
         {
-            throw new NotImplementedException();
+            var result = new ServiceReponse<Product>();
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
+
+            if (product == null)
+            {
+                result.Success = false;
+                result.Message = "Product not found";
+                return result;
+            }
+
+            _context.Entry(product).CurrentValues.SetValues(updatedProduct);
+            //product.Name = updatedProduct.Name;
+            //product.Description = updatedProduct.Description;
+            //product.Price = updatedProduct.Price;
+            //.....
+
+            await _context.SaveChangesAsync();
+
+            result.Data = product;
+            result.Success = true;
+            result.Message = "Product updated successfully";
+            return result;
         }
     }
 }
