@@ -1,0 +1,55 @@
+﻿@page "/auth/register"
+@using Shop.Shared.Auth
+@using Shop.Shared.Services.AuthService
+@inject IAuthService _authService
+@inject NavigationManager _navigationManager
+
+
+<EditForm Model="userRegisterDto" OnValidSubmit="HandleRegister">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="userRegisterDto.Email" />
+    </div>
+
+    <div class="form-group">
+        <label for="userName">User name</label>
+        <InputText id="userName" class="form-control" @bind-Value="userRegisterDto.UserName" />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="userRegisterDto.Password" />
+    </div>
+
+    <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="userRegisterDto.ConfirmPassword" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</EditForm>
+
+
+@code {
+
+    private UserRegisterDto userRegisterDto = new UserRegisterDto();
+    string errorMessage = string.Empty;
+
+    private async void HandleRegister()
+    {
+        var result = await _authService.Register(userRegisterDto);
+        if (result.Success)
+        {
+            _navigationManager.NavigateTo("/auth/login");
+        }
+        else
+        {
+            errorMessage = result.Message;
+        }
+    }
+}
+
