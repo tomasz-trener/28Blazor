@@ -47,6 +47,10 @@ else
         </tbody>
     </table>
 
+    <button class="btn btn-primary" @onclick="Previous" >Previous</button>
+    <span>Page @currentPage</span>
+    <button class="btn btn-primary" @onclick=Next >Next</button>
+
 }
 
 @code {
@@ -54,6 +58,9 @@ else
     private List<Product> products;
     private string message = "Loading...";
     private string searchText = string.Empty;
+
+    private int currentPage = 1;
+    private int pageSize = 10;
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,7 +70,8 @@ else
     private async Task LoadProducts()
     {
         // products = await Http.GetFromJsonAsync<List<Product>>("api/products");
-        var reponse = await ProductService.GetProductsAsync();
+        //  var reponse = await ProductService.GetProductsAsync();
+        var reponse = await ProductService.SearchProdutsAsync(null, currentPage, pageSize);
         if (reponse.Success)
         {
             products = reponse.Data;
@@ -74,10 +82,10 @@ else
         }
 
     }
-
+ 
     private async Task Search()
     {
-        var response = await ProductService.SearchProdutsAsync(searchText,1,10);
+        var response = await ProductService.SearchProdutsAsync(searchText,currentPage,pageSize);
         if (response.Success)
         {
             products = response.Data;
@@ -91,5 +99,20 @@ else
     private void GoToEditProduct(int productId)
     {
         NavigationManager.NavigateTo($"/products/editProduct/{productId}");
+    }
+
+    private async Task Next()
+    {
+        currentPage++;
+        await Search();
+    }
+
+    private async Task Previous()
+    {
+        if (currentPage > 1)
+        {
+            currentPage--;
+            await Search();
+        }
     }
 }
