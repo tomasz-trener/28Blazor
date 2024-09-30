@@ -25,11 +25,11 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Barcode</th>
-                <th>Created Date</th>
+                <th @onclick='() => ChangeSortOrder("Id")'>Id</th>
+                <th @onclick='() => ChangeSortOrder("Name")'>Name</th>
+                <th @onclick='() => ChangeSortOrder("Price")'>Price</th>
+                <th @onclick='() => ChangeSortOrder("Barcode")'>Barcode</th>
+                <th @onclick='() => ChangeSortOrder("CreatedDate")'>Created Date</th>
             </tr>
         </thead>
         <tbody>
@@ -62,6 +62,8 @@ else
     private int currentPage = 1;
     private int pageSize = 10;
 
+    private bool sortAscending = true;
+
     protected override async Task OnInitializedAsync()
     {
         await LoadProducts();
@@ -81,6 +83,24 @@ else
             message = reponse.Message;
         }
 
+    }
+
+    private void ChangeSortOrder(string column)
+    {
+        sortAscending = !sortAscending;
+        if (sortAscending)
+        {
+            products = products.OrderBy(p => GetPropertyValue(p,column)).ToList();
+        }
+        else
+        {
+            products = products.OrderByDescending(p => GetPropertyValue(p, column)).ToList();
+        }
+    }
+
+    private object GetPropertyValue(Product product, string propertyName)
+    {
+        return product.GetType().GetProperty(propertyName).GetValue(product, null);
     }
  
     private async Task Search()
