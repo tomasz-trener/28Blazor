@@ -17,17 +17,17 @@ namespace Shop.Shared.Services.ProdcutService
     public class ProductService : IProductService
     {
         private readonly HttpClient _httpClient;
-        private readonly AppSettings _appSettngs;
+        private readonly AppSettings _appSettings;
 
         public ProductService(HttpClient httpClient, IOptions<AppSettings> appSettings)
         {
             _httpClient = httpClient;
-            _appSettngs = appSettings.Value;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<ServiceReponse<Product>> CreateProductService(Product newProduct)
         {
-            var response = await _httpClient.PostAsJsonAsync(_appSettngs.ProductEndpoint.CreateProduct, newProduct);
+            var response = await _httpClient.PostAsJsonAsync(_appSettings.ProductEndpoint.CreateProduct, newProduct);
             var result = await response.Content.ReadFromJsonAsync<ServiceReponse<Product>>();
             return result;
         }
@@ -50,7 +50,7 @@ namespace Shop.Shared.Services.ProdcutService
         {
             try
             {
-                var reponse = await _httpClient.GetAsync(_appSettngs.ProductEndpoint.GetProducts);
+                var reponse = await _httpClient.GetAsync(_appSettings.ProductEndpoint.GetProducts);
                 reponse.EnsureSuccessStatusCode();
                 var json = await reponse.Content.ReadAsStringAsync();
                 var products = JsonConvert.DeserializeObject<ServiceReponse<List<Product>>>(json);
@@ -74,9 +74,34 @@ namespace Shop.Shared.Services.ProdcutService
             }
         }
 
-        public Task<ServiceReponse<List<Product>>> SearchProcutsAsync(string text, int page, int pageSize)
+        public async Task<ServiceReponse<List<Product>>> SearchProdutsAsync(string text, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string searchUrl = _appSettings.ProductEndpoint.SearchProduct;
+                string query = string.IsNullOrEmpty(text) ? "" : $"{text}/";
+                query += $"{page}/{pageSize}";
+
+                var response = await _httpClient.GetAsync($"{searchUrl}/{query}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ServiceReponse<List<Product>>()
+                    {
+                        Success = false,
+                        Message = "Failed to load products"
+                    };
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var products = JsonConvert.DeserializeObject<ServiceReponse<List<Product>>>(json);
+                return products;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<ServiceReponse<Product>> UpdateProductAsync(Product product)
@@ -84,7 +109,7 @@ namespace Shop.Shared.Services.ProdcutService
 
             try
             {
-                var response = await _httpClient.PutAsJsonAsync(_appSettngs.ProductEndpoint.UpdateProduct, product);
+                var response = await _httpClient.PutAsJsonAsync(_appSettings.ProductEndpoint.UpdateProduct, product);
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
                 var updatedProduct = JsonConvert.DeserializeObject<ServiceReponse<Product>>(json);

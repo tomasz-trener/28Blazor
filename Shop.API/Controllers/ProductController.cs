@@ -71,6 +71,19 @@ namespace Shop.API.Controllers
             }
             return NotFound(result);
         }
+
+        [HttpGet("search/{text}/{page}/{pageSize}")]
+        [HttpGet("search/{page}/{pageSize}")]
+        public async Task<ActionResult<ServiceReponse<List<Product>>>> 
+            SearchProducts([FromRoute] string? text, [FromRoute] int page=1, [FromRoute] int pageSize=10)
+        {
+            var result = await _productService.SearchProdutsAsync(text, page, pageSize);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
+        }
     }
 }
 

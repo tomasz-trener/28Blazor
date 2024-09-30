@@ -15,6 +15,6 @@ namespace Shop.Shared.Services.ProdcutService
         Task<ServiceReponse<Product>> UpdateProductAsync(Product product);
         Task<ServiceReponse<bool>> DeleteProductAsync(int id);
 
-        Task<ServiceReponse<List<Product>>> SearchProcutsAsync(string text, int page, int pageSize);
+        Task<ServiceReponse<List<Product>>> SearchProdutsAsync(string text, int page, int pageSize);
     }
 }

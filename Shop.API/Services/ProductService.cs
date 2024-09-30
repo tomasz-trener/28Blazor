@@ -108,9 +108,40 @@ namespace Shop.API.Services
             return result;
         }
 
-        public Task<ServiceReponse<List<Product>>> SearchProcutsAsync(string text, int page, int pageSize)
+        public async Task<ServiceReponse<List<Product>>> SearchProdutsAsync(string text, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            IQueryable<Product> query = _context.Products;
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                query = query.Where(p => p.Name.Contains(text) || p.Description.Contains(text));
+            }
+
+            try
+            {
+                var products = await query.Skip(pageSize * (page - 1)).Take(pageSize).ToListAsync();
+
+                var result = new ServiceReponse<List<Product>>
+                {
+                    Data = products,
+                    Success = true,
+                    Message = "Products retrieved successfully"
+                };
+
+                return result;
+            }
+            catch (Exception)
+            {
+                var result = new ServiceReponse<List<Product>>
+                {
+                    Data = null,
+                    Success = false,
+                    Message = "Error retrieving products"
+                };
+                return result;
+            }
+          
+
         }
 
         public async Task<ServiceReponse<Product>> UpdateProductAsync(Product updatedProduct)

@@ -18,6 +18,8 @@ var uriBuilder = new UriBuilder(appSettingsSection.BaseApiUrl)
     Path = appSettingsSection.ProductEndpoint.BaseUrl,
 };
 
+builder.Services.Configure<AppSettings>(appSettings);
+
 builder.Services.AddHttpClient<IProductService, ProductService>(client=>client.BaseAddress = uriBuilder.Uri);
 
 await builder.Build().RunAsync();
