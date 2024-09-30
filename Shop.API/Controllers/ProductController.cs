@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Shared;
 using Shop.Shared.Models;
 using Shop.Shared.Services.ProdcutService;
@@ -62,6 +63,7 @@ namespace Shop.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<ServiceReponse<Product>>> UpdateProduct([FromBody] Product product)
         {
             var result = await _productService.UpdateProductAsync(product);
