@@ -25,9 +25,11 @@ namespace Shop.Shared.Services.ProdcutService
             _appSettngs = appSettings.Value;
         }
 
-        public Task<ServiceReponse<Product>> CreateProductServiceReponse(Product product)
+        public async Task<ServiceReponse<Product>> CreateProductService(Product newProduct)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync(_appSettngs.ProductEndpoint.CreateProduct, newProduct);
+            var result = await response.Content.ReadFromJsonAsync<ServiceReponse<Product>>();
+            return result;
         }
 
         public async Task<ServiceReponse<bool>> DeleteProductAsync(int id)

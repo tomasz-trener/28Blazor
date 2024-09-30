@@ -11,7 +11,7 @@ namespace Shop.Shared.Services.ProdcutService
     {
         Task<ServiceReponse<List<Product>>> GetProductsAsync();
         Task<ServiceReponse<Product>> GetProductAsync(int id);
-        Task<ServiceReponse<Product>> CreateProductServiceReponse(Product product);
+        Task<ServiceReponse<Product>> CreateProductService(Product product);
         Task<ServiceReponse<Product>> UpdateProductAsync(Product product);
         Task<ServiceReponse<bool>> DeleteProductAsync(int id);
 

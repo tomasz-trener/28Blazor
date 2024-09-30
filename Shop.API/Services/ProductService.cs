@@ -16,7 +16,7 @@ namespace Shop.API.Services
             _context = context;
         }
 
-        public Task<ServiceReponse<Product>> CreateProductServiceReponse(Product product)
+        public Task<ServiceReponse<Product>> CreateProductService(Product product)
         {
             throw new NotImplementedException();
         }
