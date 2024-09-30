@@ -16,9 +16,29 @@ namespace Shop.API.Services
             _context = context;
         }
 
-        public Task<ServiceReponse<Product>> CreateProductService(Product product)
+        public async Task<ServiceReponse<Product>> CreateProductService(Product product)
         {
-            throw new NotImplementedException();
+            var result = new ServiceReponse<Product>();
+            try
+            {
+                await _context.Products.AddAsync(product);
+
+                await _context.SaveChangesAsync();
+
+                result.Data = product;
+                result.Success = true;
+                result.Message = "Product created successfully";
+
+
+            }
+            catch (Exception ex)
+            {
+                result.Message = $"Error creating product: {ex.Message}";
+                result.Success = false;
+            }
+
+            return result;
+
         }
 
         public async Task<ServiceReponse<bool>> DeleteProductAsync(int id)

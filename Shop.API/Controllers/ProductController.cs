@@ -17,6 +17,16 @@ namespace Shop.API.Controllers
             _productService = productService;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<ServiceReponse<Product>>> CreateProduct([FromBody] Product product)
+        {
+            var result = await _productService.CreateProductService(product);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return NotFound(result);
+        }
 
         [HttpGet]
         public async Task<ActionResult<ServiceReponse<List<Product>>>> GetProducts()
